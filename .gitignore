@@ -1,0 +1,13 @@
+# Container images — 3.3 GB each. These are build outputs; they belong in
+# /home/shared/furiosa-opt on the cluster, never in git.
+*.sqsh
+*.tar
+*.tgz
+
+# Build and verification logs
+*.log
+
+# Editor / OS noise
+.DS_Store
+*.swp
+*~

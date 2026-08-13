@@ -1,0 +1,6 @@
+# Allowlist: the build context should hold only what the Dockerfile needs.
+# Without this, a stray 3.3 GB .sqsh sitting in the repo directory would be
+# uploaded to the build daemon on every `podman build`. The Dockerfile now
+# COPYs nothing, so the context can be empty.
+*
+!Dockerfile
