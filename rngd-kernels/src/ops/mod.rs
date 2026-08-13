@@ -13,6 +13,7 @@
 //! | 05 | [`gemm`] | 18 기본 행렬 곱 연산 커널 |
 //! | 06 | [`reduce_sum`] | 19 LLM 추론 연산 커널 (intra + inter slice reduce) |
 //! | 06b | [`reduce_sum_ragged`] | 19 LLM 추론 연산 커널 (padded reduce axis) |
+//! | 07 | [`rmsnorm`] | 19 LLM 추론 연산 커널 (multi-pass, stash, ALU budget) |
 
 pub mod add;
 pub mod dot;
@@ -20,4 +21,7 @@ pub mod gemm;
 pub mod gemv;
 pub mod mul;
 pub mod reduce_sum;
+pub mod reduce_sum_exp;
 pub mod reduce_sum_ragged;
+pub mod rmsnorm;
+pub mod softmax;

@@ -74,8 +74,9 @@ Each rung adds exactly one concept. Do not skip: rung N's concept is assumed by 
 | 05 | **`gemm`** | both output axes in `Slice`, `Lane` carries `J`; 100% MAC utilisation | **done** — WBS 18 |
 | 06 | **`reduce_sum`** | `vector_intra_slice_reduce` + `vector_inter_slice_reduce` | **done** |
 | 06b | **`reduce_sum_ragged`** | row-wise reduce over a padded axis (identity-element contract) | **done** |
-| 07 | `rmsnorm` | `vector_stash` for `x*x`, multi-pass, VRF scalars, ALU budgeting | todo |
-| 08 | `softmax` | max → exp → sum → div; `TagMode::Comparison` for masking | todo |
+| 07 | **`rmsnorm`** | `vector_stash` for `x*x`, **4 passes**, VRF scalars, ALU budgeting | **done** |
+| 07b | **`reduce_sum_exp`** | `sum(exp(x))` over a padded axis — unblocks softmax | **done** |
+| 08 | **`softmax`** | max → exp → sum → div, **5 passes**; one sentinel serves both reduces | **done** |
 | 09 | `qk_matmul` | batched matmul, GQA broadcast of KV heads | todo |
 | 10 | `attn_output` | score × V matmul | todo |
 | 11 | `attention` | 09 → 08 → 10 composed | **goal** |

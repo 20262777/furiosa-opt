@@ -15,7 +15,7 @@ set -uo pipefail
 cd "$(dirname "$0")"
 
 # Rungs currently under the pipeline, in ladder order.
-OPS=(add mul dot gemv gemm reduce_sum reduce_sum_ragged)
+OPS=(add mul dot gemv gemm reduce_sum reduce_sum_ragged reduce_sum_exp rmsnorm softmax)
 
 # Locate the torch venv by walking up from this package, so the package can sit at any
 # depth (e.g. nested inside the cluster-image repo). Absolute path, otherwise python

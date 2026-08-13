@@ -92,10 +92,16 @@ reduce operation's identity element in the tail.
 | emulation | ✅ bit-exact | ✅ bit-exact |
 | vISA lowering | ❌ | ✅ |
 
-The cost is a precondition the kernel cannot check, and one that **does not generalise**:
-identities exist for `Add` (`0`), `Max` (`-inf`), `Min` (`+inf`), but not for
-`sum(exp(x))` — no `p` satisfies `exp(p) = 0`. **Softmax still needs an answer**, and
-that is now the open question blocking rung 08, not rung 07.
+The cost is a precondition the kernel cannot check. Identities: `Add` → `0`, `Max` →
+`-inf`, `Min` → `+inf`.
+
+> **Correction.** This spec previously claimed the contract "does not generalise" to
+> `sum(exp(x))`, on the grounds that no `p` satisfies `exp(p) = 0`, and concluded that
+> softmax was blocked. **That is wrong** — true in exact arithmetic, false in floating
+> point. `exp` underflows, so any sufficiently negative `p` (e.g. `-3.39e38`) gives
+> exactly `0`. The identity is a property of the whole reduce *chain*, not of the reduce
+> op alone. Rung 07b [`reduce_sum_exp`](../reduce_sum_exp/spec.md) demonstrates it
+> bit-exactly, and softmax is not blocked.
 
 ## Pipeline trace
 
@@ -145,9 +151,7 @@ would make either a broken mask or a broken contract look correct.)
 ## Follow-up
 
 - **`Max` variant** for `softmax`'s row-max pass; identity is `-inf`.
-- **Softmax's `sum(exp(x))`** has no identity padding. Options to explore: mask to zero
-  with the Fetch Adapter's `fetch_mask` *before* the exp; use `TagMode::Comparison` +
-  `Filter` to drop pad lanes; or a two-pass shape that commits the masked values to DM
-  and reduces over an unpadded axis in a second pass.
+- **Softmax's `sum(exp(x))`** — solved by rung 07b: a large negative sentinel underflows
+  through `exp` to `0`, the additive identity. No VCG, `fetch_mask` or `Filter` needed.
 - **`RP` too long for one slice** — needs the reduce axis partly in `Slice`, which is the
   `SliceMajor` / `TimeMajor` VCG territory that does not currently lower.
