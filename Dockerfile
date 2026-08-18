@@ -145,3 +145,5 @@ run curl -fsSL https://claude.ai/install.sh | bash && echo 'export PATH="$HOME/.
 
 WORKDIR /opt/furiosa/lab
 CMD ["/bin/bash", "-l"]
+
+LABEL org.opencontainers.image.source="https://github.com/20262777/furiosa-opt"
